@@ -16,6 +16,7 @@ O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados 
   - Suno
 
 - A saída de cada script **main.py** ficara na pasta ***/data*** no mesmo diretório
+  - Configurado para extrair as 10 últimas páginas de publicação de cada domínio (editável para coletar notícias mais antigas) 
   - Saída em formato JSON
     - Copiar os dados de saída e utilizar o recurso "Beautify" ou "Tree Viewer" do domínio abaixo
     - [Best JSON Viewer and JSON Beautifier Online (codebeautify.org)](https://codebeautify.org/jsonviewer)
