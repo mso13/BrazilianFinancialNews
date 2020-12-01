@@ -1,5 +1,5 @@
 # Brazilian Financial News
-O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados textuais de importantes sites relacionados ao mercado financeiro no Brasil.
+O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados textuais de importantes sites de notícias relacionadas ao mercado financeiro brasileiro.
 
 ------
 
