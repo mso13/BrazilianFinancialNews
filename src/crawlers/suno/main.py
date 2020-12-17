@@ -13,7 +13,7 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range (1, 10)]
+        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range (1, 10000)]
 
         for url in urls:
             yield scrapy.Request( url=url, callback=self.parse_front )
