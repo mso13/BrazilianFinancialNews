@@ -1,9 +1,9 @@
+import os
 import re
 import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.http import FormRequest
-
 
 class InfoMoneySpider(scrapy.Spider):
 
@@ -59,6 +59,21 @@ class InfoMoneySpider(scrapy.Spider):
         # Extract the news date
         news_date_ext = news_date.extract_first().strip()
 
+        # Direct to the news full text
+        news_full_text = response.xpath('//div[contains(@class, "article-content")]//p//text()')
+
+        # Extract the news full text
+        separator = ''
+
+        full_string_text = separator.join(news_full_text.extract())
+
+        # Replacing special character
+        full_string_text = full_string_text.replace(' ', ' ')
+
+        full_string_text = re.sub(' +', ' ', full_string_text)
+
+        news_full_text_ext = full_string_text.strip()
+
         # Direct to the news tags
         news_tags = response.css('ul.article-terms li a ::text')
 
@@ -80,6 +95,7 @@ class InfoMoneySpider(scrapy.Spider):
         results_dict['topic'] = main_topic
         results_dict['title'] = news_title_ext
         results_dict['date'] = news_date_ext
+        results_dict['full_text'] = news_full_text_ext
         results_dict['link'] = response.url
         results_dict['tags'] = news_tags_ext
 
@@ -87,6 +103,10 @@ class InfoMoneySpider(scrapy.Spider):
 
 
 if __name__ == '__main__':
+
+    THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    filename = 'infomoney'
 
     # List to save the data collected
     results_list = list()
@@ -101,5 +121,5 @@ if __name__ == '__main__':
     process.start()
 
     # Save the list of dicts
-    with open('data/results-infomoney.json', 'w', encoding='utf8') as f:
+    with open(os.path.join(THIS_DIR + '/data/results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
