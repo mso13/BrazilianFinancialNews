@@ -1,14 +1,20 @@
 # Brazilian Financial News
-O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados textuais de importantes sites de notícias relacionadas ao mercado financeiro brasileiro.
+O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados textuais de importantes sites de notícias relacionadas ao mercado financeiro brasileiro. 
 
 ------
 
-#### *Execução:*
+#### *Execução*
 
 - Python 3.7
 - Scrapy
 
-##### - src/crawlers:
+---
+
+### Crawlers
+
+
+
+##### src/crawlers
 
 - Cada diretório possui um script **main.py** 
   - Infomoney
@@ -24,9 +30,15 @@ O seguinte projeto apresenta diferentes Web Crawlers para a extração de dados 
     - [Best JSON Viewer and JSON Beautifier Online (codebeautify.org)](https://codebeautify.org/jsonviewer)
   - Cada site com campos específicos (título, data de publicação, url, categoria e tags)
 
-**- src/EDA:**
+---
 
-- Análise inicial dos dados coletados (Jupyter Notebook)
+### Análise dos Dados
+
+
+
+**src/EDA**
+
+- Análise inicial dos dados coletados (Jupyter Notebooks)
 - Organizados em DataFrames indexados por Data da publicação da notícia
 
 ---
