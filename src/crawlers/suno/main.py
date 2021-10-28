@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import time
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
@@ -15,6 +16,7 @@ class SunoSpider(scrapy.Spider):
         urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range (1, 10)]
 
         for url in urls:
+            time.sleep(0.01)
             yield scrapy.Request( url=url, callback=self.parse_front )
 
     def parse_front(self, response):
@@ -107,5 +109,5 @@ if __name__ == '__main__':
     process.start()
 
     # Save the list of dicts
-    with open(os.path.join(THIS_DIR + '/data/results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
+    with open(os.path.join(THIS_DIR + '/data/latest-results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)

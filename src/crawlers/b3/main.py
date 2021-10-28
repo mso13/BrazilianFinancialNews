@@ -5,6 +5,12 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.http import FormRequest
 
+# ATENÇÃO: A página de empresas listadas passará por alterações. 
+# Caso você tenha essa url favoritada fique atento. 
+# A partir de 8 de setembro ela será substituída. 
+# A página atual ficará disponível, paralelamente, até 29 de outubro. 
+# Após essa data, ela será desativada.
+
 class B3Spider(scrapy.Spider):
 
     name = "b3_spider"
@@ -113,5 +119,5 @@ if __name__ == '__main__':
     process.start()
 
     # Save the list of dicts
-    # with open(os.path.join(THIS_DIR + '/data/results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
-    #     json.dump(results_list, f, ensure_ascii=False)
+    with open(os.path.join(THIS_DIR + '/data/results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
+        json.dump(results_list, f, ensure_ascii=False)
