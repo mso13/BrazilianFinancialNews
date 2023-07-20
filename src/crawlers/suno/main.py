@@ -13,16 +13,18 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range (1, 10)]
+        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range(1, 10000)]
 
         for url in urls:
             time.sleep(0.01)
-            yield scrapy.Request( url=url, callback=self.parse_front )
+            yield scrapy.Request(url=url, callback=self.parse_front)
 
     def parse_front(self, response):
 
         # Narrow in on the news cards (10 cards per page)
-        news_cards = response.css('div.cardsPage__listCard__boxs > div.cardsPage__listCard__boxs__content')
+        news_cards = response.css(
+            'div.cardsPage__listCard__boxs > div.cardsPage__listCard__boxs__content'
+        )
 
         # Direct to news links
         news_links = news_cards.xpath('./a/@href')
@@ -32,14 +34,14 @@ class SunoSpider(scrapy.Spider):
 
         # Follow the links to the next parser
         for url in links_to_follow:
-            #print (url)
-            yield response.follow( url=url, callback=self.parse_pages )
-
+            yield response.follow(url=url, callback=self.parse_pages)
 
     def parse_pages(self, response):
 
         # Direct to the news main topic
-        news_topic = response.xpath('//span[contains(@class, "newsContent__article__categoryName")]/a/text()')
+        news_topic = response.xpath(
+            '//span[contains(@class, "newsContent__article__categoryName")]/a/text()'
+        )
 
         # Extract the news main topic
         news_topic_ext = news_topic.extract_first().strip()
@@ -92,8 +94,6 @@ class SunoSpider(scrapy.Spider):
 
 if __name__ == '__main__':
 
-    THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-
     filename = 'suno'
 
     # List to save the data collected
@@ -108,6 +108,15 @@ if __name__ == '__main__':
     # Start the crawling process
     process.start()
 
+    CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+    CACHE_PATH = os.path.join(
+        CUR_DIR + '/data/latest-results-{}.json'.format(filename)
+    )
+
+    # Create cache dir if it does not exists
+    if not os.path.exists(CACHE_PATH):
+        os.makedirs(CACHE_PATH)
+
     # Save the list of dicts
-    with open(os.path.join(THIS_DIR + '/data/latest-results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
+    with open(CACHE_PATH, 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
