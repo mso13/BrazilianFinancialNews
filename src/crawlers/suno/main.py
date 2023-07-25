@@ -3,6 +3,7 @@ import re
 import json
 import time
 import scrapy
+from datetime import datetime
 from scrapy.crawler import CrawlerProcess
 
 
@@ -13,7 +14,7 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range(1, 10000)]
+        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range(1, 10)]
 
         for url in urls:
             time.sleep(0.01)
@@ -94,7 +95,11 @@ class SunoSpider(scrapy.Spider):
 
 if __name__ == '__main__':
 
-    filename = 'suno'
+    # Source Name
+    source = 'suno'
+    
+    # Search Date
+    latest_dt = str(datetime.now().date()).replace('-', '')
 
     # List to save the data collected
     results_list = list()
@@ -108,9 +113,11 @@ if __name__ == '__main__':
     # Start the crawling process
     process.start()
 
+    # Name Dirs
     CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+
     CACHE_PATH = os.path.join(
-        CUR_DIR + '/data/latest-results-{}.json'.format(filename)
+        CUR_DIR + f'/data/'
     )
 
     # Create cache dir if it does not exists
@@ -118,5 +125,5 @@ if __name__ == '__main__':
         os.makedirs(CACHE_PATH)
 
     # Save the list of dicts
-    with open(CACHE_PATH, 'w', encoding='utf8') as f:
+    with open(CACHE_PATH + f'latest-results-{latest_dt}.json', 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
