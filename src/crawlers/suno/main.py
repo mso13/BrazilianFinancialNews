@@ -14,7 +14,7 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range(1, 10)]
+        urls = ['https://www.sunoresearch.com.br/noticias/todos/page/%s' % i for i in range(1, 10000)]
 
         for url in urls:
             time.sleep(0.01)
@@ -125,5 +125,5 @@ if __name__ == '__main__':
         os.makedirs(CACHE_PATH)
 
     # Save the list of dicts
-    with open(CACHE_PATH + f'latest-results-{latest_dt}.json', 'w', encoding='utf8') as f:
+    with open(CACHE_PATH + f'{source}-latest-results-{latest_dt}.json', 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)

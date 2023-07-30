@@ -2,6 +2,7 @@ import os
 import re
 import json
 import scrapy
+from datetime import datetime
 from scrapy.crawler import CrawlerProcess
 
 
@@ -12,10 +13,10 @@ class MoneyTimesSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.moneytimes.com.br/ultimas-noticias/page/%s' % i for i in range(1, 10)]
+        urls = ['https://www.moneytimes.com.br/ultimas-noticias/page/%s' % i for i in range(1, 10000)]
 
         for url in urls:
-            yield scrapy.Request( url=url, callback=self.parse_front )
+            yield scrapy.Request(url=url, callback=self.parse_front)
 
     def parse_front(self, response):
 
@@ -89,9 +90,10 @@ class MoneyTimesSpider(scrapy.Spider):
 
 if __name__ == '__main__':
 
-    THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-
-    filename = 'moneytimes'
+    source = 'moneytimes'
+    
+    # Search Date
+    latest_dt = str(datetime.now().date()).replace('-', '')
 
     # List to save the data collected
     results_list = list()
@@ -105,6 +107,17 @@ if __name__ == '__main__':
     # Start the crawling process
     process.start()
 
+    # Name Dirs
+    CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    CACHE_PATH = os.path.join(
+        CUR_DIR + f'/data/'
+    )
+
+    # Create cache dir if it does not exists
+    if not os.path.exists(CACHE_PATH):
+        os.makedirs(CACHE_PATH)
+
     # Save the list of dicts
-    with open(os.path.join(THIS_DIR + '/data/results-{}.json'.format(filename)), 'w', encoding='utf8') as f:
+    with open(CACHE_PATH + f'{source}-latest-results-{latest_dt}.json', 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
